@@ -1,0 +1,123 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Exercise {
+    private String name;
+    private String muscleGroup;
+    private String equipment;
+
+    public Exercise(String name, String muscleGroup, String equipment) {
+        this.name = name;
+        this.muscleGroup = muscleGroup;
+        this.equipment = equipment;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getMuscleGroup() {
+        return muscleGroup;
+    }
+
+    public String getEquipment() {
+        return equipment;
+    }
+}
+
+class Workout {
+    private Exercise exercise;
+    private int sets;
+    private int repetitions;
+
+    public Workout(Exercise exercise, int sets, int repetitions) {
+        this.exercise = exercise;
+        this.sets = sets;
+        this.repetitions = repetitions;
+    }
+
+    public Exercise getExercise() {
+        return exercise;
+    }
+
+    public int getSets() {
+        return sets;
+    }
+
+    public int getRepetitions() {
+        return repetitions;
+    }
+}
+
+class FitnessTracker {
+    private List<Workout> workoutHistory;
+    private int totalCaloriesBurned;
+    private int totalSteps;
+
+    public FitnessTracker() {
+        this.workoutHistory = new ArrayList<>();
+        this.totalCaloriesBurned = 0;
+        this.totalSteps = 0;
+    }
+
+    public void logWorkout(Workout workout) {
+        workoutHistory.add(workout);
+        totalCaloriesBurned += calculateCaloriesBurned(workout);
+    }
+
+    private int calculateCaloriesBurned(Workout workout) {
+        
+        return workout.getSets() * workout.getRepetitions() * 5; 
+    }
+
+    public void logSteps(int steps) {
+        totalSteps += steps;
+    }
+
+    public void displayWorkoutHistory() {
+        System.out.println("Workout History:");
+        for (Workout workout : workoutHistory) {
+            System.out.println(workout.getExercise().getName() + " - Sets: " + workout.getSets() + ", Repetitions: "
+                    + workout.getRepetitions());
+        }
+    }
+
+    public void displayStats() {
+        System.out.println("Total Calories Burned: " + totalCaloriesBurned);
+        System.out.println("Total Steps: " + totalSteps);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        FitnessTracker fitnessTracker = new FitnessTracker();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter workout details:");
+        System.out.print("Exercise Name: ");
+        String exerciseName = scanner.nextLine();
+        System.out.print("Muscle Group: ");
+        String muscleGroup = scanner.nextLine();
+        System.out.print("Equipment: ");
+        String equipment = scanner.nextLine();
+        Exercise exercise = new Exercise(exerciseName, muscleGroup, equipment);
+
+        System.out.print("Number of Sets: ");
+        int sets = scanner.nextInt();
+        System.out.print("Repetitions per Set: ");
+        int repetitions = scanner.nextInt();
+
+        Workout workout = new Workout(exercise, sets, repetitions);
+        fitnessTracker.logWorkout(workout);
+
+        
+        System.out.print("Enter total steps taken today: ");
+        int steps = scanner.nextInt();
+        fitnessTracker.logSteps(steps);
+        fitnessTracker.displayWorkoutHistory();
+        fitnessTracker.displayStats();
+
+        scanner.close();
+    }
+}
