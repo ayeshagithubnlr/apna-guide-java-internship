@@ -1,0 +1,126 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Song {
+    private String title;
+    private String artist;
+    private String album;
+
+    public Song(String title, String artist, String album) {
+        this.title = title;
+        this.artist = artist;
+        this.album = album;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+}
+
+class MusicPlayer {
+    private List<Song> playlist;
+    private int currentTrackIndex;
+    private boolean isPlaying;
+    private int volume;
+
+    public MusicPlayer() {
+        this.playlist = new ArrayList<>();
+        this.currentTrackIndex = 0;
+        this.isPlaying = false;
+        this.volume = 50; // Default volume level
+    }
+
+    public void addSong(Song song) {
+        playlist.add(song);
+    }
+
+    public void play() {
+        isPlaying = true;
+        System.out.println("Now playing: " + playlist.get(currentTrackIndex).getTitle());
+    }
+
+    public void pause() {
+        isPlaying = false;
+        System.out.println("Playback paused.");
+    }
+
+    public void nextTrack() {
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.size();
+        System.out.println("Switched to next track: " + playlist.get(currentTrackIndex).getTitle());
+    }
+
+    public void adjustVolume(int newVolume) {
+        volume = newVolume;
+        System.out.println("Volume adjusted to: " + volume);
+    }
+
+    public void displayPlaylist() {
+        System.out.println("Current Playlist:");
+        for (int i = 0; i < playlist.size(); i++) {
+            System.out.println((i + 1) + ". " + playlist.get(i).getTitle() + " - " + playlist.get(i).getArtist());
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MusicPlayer musicPlayer = new MusicPlayer();
+        Scanner scanner = new Scanner(System.in);
+
+        // Add sample songs to the playlist
+        Song song1 = new Song("Song 1", "Artist 1", "Album 1");
+        Song song2 = new Song("Song 2", "Artist 2", "Album 2");
+        musicPlayer.addSong(song1);
+        musicPlayer.addSong(song2);
+
+        // User interaction loop
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("\nMusic Player Menu:");
+            System.out.println("1. Play");
+            System.out.println("2. Pause");
+            System.out.println("3. Next Track");
+            System.out.println("4. Adjust Volume");
+            System.out.println("5. Display Playlist");
+            System.out.println("6. Exit");
+            System.out.print("Select an option: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    musicPlayer.play();
+                    break;
+                case 2:
+                    musicPlayer.pause();
+                    break;
+                case 3:
+                    musicPlayer.nextTrack();
+                    break;
+                case 4:
+                    System.out.print("Enter new volume level: ");
+                    int newVolume = scanner.nextInt();
+                    musicPlayer.adjustVolume(newVolume);
+                    break;
+                case 5:
+                    musicPlayer.displayPlaylist();
+                    break;
+                case 6:
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+
+        scanner.close();
+    }
+}
