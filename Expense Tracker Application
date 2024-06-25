@@ -1,0 +1,117 @@
+/*expense tracker application*/
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+class Expense {
+    private String category;
+    private double amount;
+
+    public Expense(String category, double amount) {
+        this.category = category;
+        this.amount = amount;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+}
+
+class Budget {
+    private String category;
+    private double amount;
+
+    public Budget(String category, double amount) {
+        this.category = category;
+        this.amount = amount;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+}
+
+class ExpenseTracker {
+    private List<Expense> expenses = new ArrayList<>();
+    private Map<String, Double> budgets = new HashMap<>();
+    private Scanner scanner = new Scanner(System.in);
+
+    public void trackExpense() {
+        System.out.println("Enter expense category: ");
+        String category = scanner.nextLine();
+        
+        System.out.println("Enter expense amount: ");
+        double amount = Double.parseDouble(scanner.nextLine());
+        
+        expenses.add(new Expense(category, amount));
+        System.out.println("Expense tracked - Category: " + category + ", Amount: " + amount);
+    }
+
+    public void setBudget() {
+        System.out.println("Enter budget category: ");
+        String category = scanner.nextLine();
+        
+        System.out.println("Enter budget amount: ");
+        double amount = Double.parseDouble(scanner.nextLine());
+        
+        budgets.put(category, amount);
+        System.out.println("Budget set for Category: " + category + ", Amount: " + amount);
+    }
+
+    public void visualizeData() {
+        System.out.println("\nVisualization of Data:");
+        System.out.println("Expenses:");
+        for (Expense expense : expenses) {
+            System.out.println("Category: " + expense.getCategory() + ", Amount: " + expense.getAmount());
+        }
+        System.out.println("\nBudgets:");
+        for (Map.Entry<String, Double> entry : budgets.entrySet()) {
+            System.out.println("Category: " + entry.getKey() + ", Budget: " + entry.getValue());
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ExpenseTracker expenseTracker = new ExpenseTracker();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Expense Tracker Application");
+        System.out.println("Enter '1' to track an expense, '2' to set a budget, '3' to visualize data, or '0' to exit.");
+
+        int choice = -1;
+        while (choice != 0) {
+            System.out.println("Enter your choice: ");
+            choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+                case 1:
+                    expenseTracker.trackExpense();
+                    break;
+                case 2:
+                    expenseTracker.setBudget();
+                    break;
+                case 3:
+                    expenseTracker.visualizeData();
+                    break;
+                case 0:
+                    System.out.println("Exiting the Expense Tracker Application. Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+        
+        scanner.close();
+    }
+}
